@@ -26,6 +26,7 @@ outputs:
         - {{ stdlib("c") }}
         - {{ compiler('rust') }}
         - cargo-bundle-licenses
+        - pkg-config  # [unix]
       host:
         - python
         - maturin >=1.2.2,<2
