@@ -11,7 +11,7 @@ source:
   sha256: 3a66cc9ff3aad47bf4e233b0485136bb836e84cc9b5523a13654b962449a737b
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: py-rattler
