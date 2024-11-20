@@ -11,7 +11,7 @@ source:
   sha256: 67d48c1745aa43b4df95c8fab0dd4ffcdd5d9e15014ac4af4994dc5ec1b887b8
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: py-rattler
@@ -54,7 +54,7 @@ outputs:
 
 
 about:
-  home: https://github.com/mamba-org/rattler
+  home: https://github.com/conda/rattler
   license: BSD-3-Clause
   license_family: BSD
   license_file:
