@@ -15,4 +15,4 @@ export MATURIN_PEP517_ARGS="--no-default-features --features=native-tls"
 $PYTHON -m pip install . -vv
 
 pushd py-rattler
-cargo-bundle-licenses --format yaml --output ../THIRDPARTY.yml
+cargo-bundle-licenses --format yaml --output THIRDPARTY.yml

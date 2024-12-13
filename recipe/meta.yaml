@@ -58,8 +58,8 @@ about:
   license: BSD-3-Clause
   license_family: BSD
   license_file:
-    - LICENSE
-    - THIRDPARTY.yml
+    - py-rattler/LICENSE
+    - py-rattler/THIRDPARTY.yml
   summary: A blazing fast library to work with the conda ecosystem
 
   # The remaining entries in this section are optional, but recommended.

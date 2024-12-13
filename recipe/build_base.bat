@@ -13,4 +13,4 @@ FOR /F "delims=" %%i IN ('dir /s /b target\wheels\*.whl') DO set py_rattler_whee
 if errorlevel 1 exit 1
 
 cd py-rattler
-cargo-bundle-licenses --format yaml --output ..\THIRDPARTY.yml
+cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
