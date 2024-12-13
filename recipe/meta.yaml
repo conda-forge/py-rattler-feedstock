@@ -69,7 +69,7 @@ about:
     easily interact with the conda ecosystem without being dependent on Python. Its
     primary use case is as a library that you can use to provide conda related
     workflows in your own tools.
-  dev_url: https://github.com/mamba-org/rattler
+  dev_url: https://github.com/conda/rattler
 
 extra:
   feedstock-name: py-rattler
