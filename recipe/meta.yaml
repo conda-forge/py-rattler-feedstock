@@ -1,6 +1,6 @@
 {% set name = "py-rattler" %}
 {% set python_name = "py_rattler" %}
-{% set version = "0.8.2" %}
+{% set version = "0.9.0" %}
 
 package:
   name: {{ name|lower }}-split
@@ -8,10 +8,10 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ python_name }}-{{ version }}.tar.gz
-  sha256: 67d48c1745aa43b4df95c8fab0dd4ffcdd5d9e15014ac4af4994dc5ec1b887b8
+  sha256: 488922a45ed3276732f9c413617b6ed6587eb0583af28e9c5ab48e946e8b1a25
 
 build:
-  number: 2
+  number: 0
 
 outputs:
   - name: py-rattler
@@ -58,8 +58,8 @@ about:
   license: BSD-3-Clause
   license_family: BSD
   license_file:
-    - LICENSE
-    - THIRDPARTY.yml
+    - py-rattler/LICENSE
+    - py-rattler/THIRDPARTY.yml
   summary: A blazing fast library to work with the conda ecosystem
 
   # The remaining entries in this section are optional, but recommended.
@@ -69,7 +69,7 @@ about:
     easily interact with the conda ecosystem without being dependent on Python. Its
     primary use case is as a library that you can use to provide conda related
     workflows in your own tools.
-  dev_url: https://github.com/mamba-org/rattler
+  dev_url: https://github.com/conda/rattler
 
 extra:
   feedstock-name: py-rattler
