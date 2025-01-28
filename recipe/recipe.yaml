@@ -4,7 +4,7 @@ context:
   version: "0.9.0"
 
 recipe:
-  name: py-rattler-split
+  name: py-rattler
   version: ${{ version }}
 
 source:
@@ -70,8 +70,6 @@ about:
     - py-rattler/LICENSE
     - py-rattler/THIRDPARTY.yml
   summary: A blazing fast library to work with the conda ecosystem
-
-  # The remaining entries in this section are optional, but recommended.
   description: |
     Rattler is a library that provides common functionality used within the conda
     ecosystem. The goal of the library is to enable programs and other libraries to
