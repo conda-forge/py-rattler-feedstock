@@ -2,7 +2,7 @@ context:
   name: py-rattler
   python_name: py_rattler
   version: "0.9.0"
-  python_min: "3.9.*"
+  python_min: ${{ python_min }}.*
 
 recipe:
   name: py-rattler
@@ -20,7 +20,7 @@ outputs:
       name: py-rattler
     build:
       # only build for the minimal python version
-      skip: not match(python, python_min)
+      skip: not (match(python, python_min) and is_abi3 == 'true')
       script: build_base
       python:
         version_independent: true
