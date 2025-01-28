@@ -1,0 +1,83 @@
+context:
+  name: py-rattler
+  python_name: py_rattler
+  version: "0.9.0"
+
+recipe:
+  name: py-rattler-split
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/${{ python_name }}-${{ version }}.tar.gz
+  sha256: 488922a45ed3276732f9c413617b6ed6587eb0583af28e9c5ab48e946e8b1a25
+
+build:
+  number: 0
+
+outputs:
+  - package:
+      name: py-rattler
+    build:
+      # only build for the minimal python version
+      skip: not match(python, "3.9.*")
+      script: build_base
+      python:
+        version_independent: true
+    requirements:
+      build:
+        - python # [build_platform != target_platform]
+        - cross-python_${{ target_platform }} # [build_platform != target_platform]
+        - maturin >=1.2.2,<2 # [build_platform != target_platform]
+        - ${{ compiler('c') }}
+        - ${{ stdlib("c") }}
+        - ${{ compiler('rust') }}
+        - cargo-bundle-licenses
+      host:
+        - python
+        - python-abi3
+        - maturin >=1.2.2,<2
+        - pip
+        - openssl # [unix]
+      run:
+        - python
+    tests:
+      - python:
+          imports:
+            - rattler
+          python_version: "3.9"
+
+  - package:
+      name: py_rattler
+    build:
+      noarch: generic
+      skip: not (linux and x86_64 and match(python, "3.9.*"))
+    requirements:
+      run:
+        - ${{ pin_subpackage('py-rattler', upper_bound="x.x.x") }}
+    tests:
+      - python:
+          imports:
+            - rattler
+
+about:
+  homepage: https://github.com/conda/rattler
+  license: BSD-3-Clause
+  license_file:
+    - py-rattler/LICENSE
+    - py-rattler/THIRDPARTY.yml
+  summary: A blazing fast library to work with the conda ecosystem
+
+  # The remaining entries in this section are optional, but recommended.
+  description: |
+    Rattler is a library that provides common functionality used within the conda
+    ecosystem. The goal of the library is to enable programs and other libraries to
+    easily interact with the conda ecosystem without being dependent on Python. Its
+    primary use case is as a library that you can use to provide conda related
+    workflows in your own tools.
+  repository: https://github.com/conda/rattler
+
+extra:
+  feedstock-name: py-rattler
+  recipe-maintainers:
+    - baszalmstra
+    - pavelzw
