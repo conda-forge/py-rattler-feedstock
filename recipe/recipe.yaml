@@ -2,6 +2,7 @@ context:
   name: py-rattler
   python_name: py_rattler
   version: "0.9.0"
+  python_min: "3.9.*"
 
 recipe:
   name: py-rattler-split
@@ -19,7 +20,7 @@ outputs:
       name: py-rattler
     build:
       # only build for the minimal python version
-      skip: not match(python, "3.9.*")
+      skip: not match(python, python_min)
       script: build_base
       python:
         version_independent: true
@@ -48,13 +49,13 @@ outputs:
       - python:
           imports:
             - rattler
-          python_version: "3.9"
+          python_version: ${{ python_min }}
 
   - package:
       name: py_rattler
     build:
       noarch: generic
-      skip: not (linux and x86_64 and match(python, "3.9.*"))
+      skip: not (linux and x86_64 and match(python, python_min))
     requirements:
       run:
         - ${{ pin_subpackage('py-rattler', upper_bound="x.x.x") }}
