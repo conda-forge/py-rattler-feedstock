@@ -13,7 +13,7 @@ source:
   sha256: ddb6d9ffa67d44fdd65cf8efc9dec28c5f51ad1e2b62930c05b0f39bd12d8053
 
 build:
-  number: 1
+  number: 2
 
 outputs:
   - package:
@@ -44,12 +44,12 @@ outputs:
           then:
             - openssl
       run:
-        - python
+        - python >=3.9
     tests:
       - python:
           imports:
             - rattler
-          python_version: ${{ python_min }}
+          python_version: ["${{ python_min }}", "3.12"]
 
   - package:
       name: py_rattler
