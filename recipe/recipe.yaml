@@ -2,7 +2,6 @@ context:
   name: py-rattler
   python_name: py_rattler
   version: "0.10.0"
-  python_min: ${{ python_min }}.*
 
 recipe:
   name: py-rattler
@@ -20,7 +19,7 @@ outputs:
       name: py-rattler
     build:
       # only build for the minimal python version
-      skip: not (match(python, python_min) and is_abi3 == 'true')
+      skip: not (match(python, python_min ~ ".*") and is_abi3 == 'true')
       script: build_base
       python:
         version_independent: true
@@ -44,7 +43,7 @@ outputs:
           then:
             - openssl
       run:
-        - python >=3.9
+        - python >=${{ python_min }}
       ignore_run_exports:
         from_package:
           - cross-python_${{ target_platform }}
@@ -52,13 +51,13 @@ outputs:
       - python:
           imports:
             - rattler
-          python_version: ["${{ python_min }}", "3.12"]
+          python_version: ["${{ python_min ~ '.*' }}", "3.12.*"]
 
   - package:
       name: py_rattler
     build:
       noarch: generic
-      skip: not (linux and x86_64 and match(python, python_min))
+      skip: not (linux and x86_64 and match(python, python_min ~ ".*"))
     requirements:
       run:
         - ${{ pin_subpackage('py-rattler', upper_bound="x.x.x") }}
