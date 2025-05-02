@@ -55,9 +55,9 @@ outputs:
           python_version: ["${{ python_min ~ '.*' }}", "3.12.*"]
       - script:
           - if: unix and is_abi3
-            then: abi3audit $SP_DIR/spam.abi3.so -s -v --assume-minimum-abi3 ${{ python_min }}
+            then: abi3audit ${{ SP_DIR }}/spam.abi3.so -s -v --assume-minimum-abi3 ${{ python_min }}
           - if: win and is_abi3
-            then: abi3audit %SP_DIR%/spam.pyd -s -v --assume-minimum-abi3 ${{ python_min }}
+            then: abi3audit ${{ SP_DIR }}/spam.pyd -s -v --assume-minimum-abi3 ${{ python_min }}
         requirements:
           run:
             - if: is_abi3
