@@ -90,7 +90,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-py--rattler-green.svg)](https://anaconda.org/conda-forge/py-rattler) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/py-rattler.svg)](https://anaconda.org/conda-forge/py-rattler) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/py-rattler.svg)](https://anaconda.org/conda-forge/py-rattler) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/py-rattler.svg)](https://anaconda.org/conda-forge/py-rattler) |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-py_rattler-green.svg)](https://anaconda.org/conda-forge/py_rattler) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/py_rattler.svg)](https://anaconda.org/conda-forge/py_rattler) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/py_rattler.svg)](https://anaconda.org/conda-forge/py_rattler) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/py_rattler.svg)](https://anaconda.org/conda-forge/py_rattler) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-py__rattler-green.svg)](https://anaconda.org/conda-forge/py_rattler) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/py_rattler.svg)](https://anaconda.org/conda-forge/py_rattler) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/py_rattler.svg)](https://anaconda.org/conda-forge/py_rattler) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/py_rattler.svg)](https://anaconda.org/conda-forge/py_rattler) |
 
 Installing py-rattler
 =====================

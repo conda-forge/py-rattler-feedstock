@@ -19,10 +19,10 @@ outputs:
       name: py-rattler
     build:
       # only build for the minimal python version
-      skip: is_abi3 and not is_python_min
+      skip: is_abi3 and not match(python, python_min ~ ".*")
       script: build_base
       python:
-        version_independent: is_abi3
+        version_independent: ${{ is_abi3 }}
     requirements:
       build:
         - if: build_platform != target_platform
@@ -58,16 +58,15 @@ outputs:
             then: abi3audit $SP_DIR/spam.abi3.so -s -v --assume-minimum-abi3 ${{ python_min }}
           - if: win and is_abi3
             then: abi3audit %SP_DIR%/spam.pyd -s -v --assume-minimum-abi3 ${{ python_min }}
-          requirements:
-            run:
-              - if: is_abi3
-                then: abi3audit
-
+        requirements:
+          run:
+            - if: is_abi3
+              then: abi3audit
   - package:
       name: py_rattler
     build:
       noarch: generic
-      skip: not (linux and x86_64 and is_python_min)
+      skip: not (linux and x86_64 and match(python, python_min ~ ".*"))
     requirements:
       run:
         - ${{ pin_subpackage('py-rattler', upper_bound="x.x.x") }}
