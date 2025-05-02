@@ -19,10 +19,10 @@ outputs:
       name: py-rattler
     build:
       # only build for the minimal python version
-      skip: not (match(python, python_min ~ ".*") and is_abi3 == 'true')
+      skip: is_abi3 and not match(python, python_min ~ ".*")
       script: build_base
       python:
-        version_independent: true
+        version_independent: ${{ is_abi3 }}
     requirements:
       build:
         - if: build_platform != target_platform
@@ -36,7 +36,8 @@ outputs:
         - cargo-bundle-licenses
       host:
         - python
-        - python-abi3
+        - if: is_abi3
+          then: python-abi3
         - maturin >=1.2.2,<2
         - pip
         - if: unix
@@ -52,7 +53,15 @@ outputs:
           imports:
             - rattler
           python_version: ["${{ python_min ~ '.*' }}", "3.12.*"]
-
+      - script:
+          - if: unix and is_abi3
+            then: abi3audit ${{ SP_DIR }}/spam.abi3.so -s -v --assume-minimum-abi3 ${{ python_min }}
+          - if: win and is_abi3
+            then: abi3audit ${{ SP_DIR }}/spam.pyd -s -v --assume-minimum-abi3 ${{ python_min }}
+        requirements:
+          run:
+            - if: is_abi3
+              then: abi3audit
   - package:
       name: py_rattler
     build:
