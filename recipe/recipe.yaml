@@ -1,7 +1,7 @@
 context:
   name: py-rattler
   python_name: py_rattler
-  version: "0.14.0"
+  version: "0.15.0"
 
 recipe:
   name: py-rattler
@@ -9,7 +9,7 @@ recipe:
 
 source:
   url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/${{ python_name }}-${{ version }}.tar.gz
-  sha256: 5ea4379cbb81c9950f29531900449bf758f5dcea73f85a94c78e57b8299d5e07
+  sha256: c6240fee02344e12631dd581fd68f50929e89948f362732ae105a53103d37f4a
 
 build:
   number: 0
