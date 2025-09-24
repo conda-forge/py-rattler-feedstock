@@ -19,7 +19,7 @@ outputs:
       name: py-rattler
     build:
       # only build for the minimal python version
-      skip: not (match(python, python_min ~ ".*") and is_abi3)
+      skip: is_abi3 and not is_python_min
       script: build_base
       python:
         version_independent: true
@@ -36,28 +36,42 @@ outputs:
         - cargo-bundle-licenses
       host:
         - python
-        - python-abi3
+        - if: is_abi3
+          then: python-abi3
         - maturin >=1.2.2,<2
         - pip
         - if: unix
           then:
             - openssl
       run:
-        - python >=${{ python_min }}
-      ignore_run_exports:
-        from_package:
-          - cross-python_${{ target_platform }}
+        - python
     tests:
       - python:
           imports:
             - rattler
-          python_version: ["${{ python_min ~ '.*' }}", "3.12.*"]
+          python_version:
+            - if: is_abi3
+              then: "${{ python_min ~ '.*' }}"
+            - "*"
+      - script:
+          - if: not is_abi3
+            then: echo "skipping abi3audit tests"
+          - if: win and is_abi3
+            then: abi3audit %PREFIX%/Lib/site-packages/rattler/rattler.pyd -s -v --assume-minimum-abi3 ${{ python_min }}
+          - if: not win and is_abi3
+            then:
+              - export SP_DIR=$(python -c "import site; print(site.getsitepackages()[0])")
+              - abi3audit $SP_DIR/rattler/rattler.abi3.so -s -v --assume-minimum-abi3 ${{ python_min }}
+        requirements:
+          run:
+            - if: is_abi3
+              then: abi3audit
 
   - package:
       name: py_rattler
     build:
       noarch: generic
-      skip: not (linux and x86_64 and match(python, python_min ~ ".*"))
+      skip: not (linux and x86_64 and is_python_min)
     requirements:
       run:
         - ${{ pin_subpackage('py-rattler', upper_bound="x.x.x") }}
