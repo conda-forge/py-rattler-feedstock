@@ -17,7 +17,7 @@ is_abi3:
 is_python_min:
 - true
 openssl:
-- '3'
+- '3.5'
 pin_run_as_build:
   python:
     min_pin: x.x
@@ -29,8 +29,7 @@ python_min:
 rust_compiler:
 - rust
 target_platform:
-- linux-aarch64
+- linux-64
 zip_keys:
 - - python
   - is_python_min
-  - channel_sources
