@@ -1,5 +1,5 @@
 MACOSX_DEPLOYMENT_TARGET:
-- '11.0'
+- '10.13'
 MACOSX_SDK_VERSION:
 - '11.0'
 c_compiler:
@@ -9,7 +9,7 @@ c_compiler_version:
 c_stdlib:
 - macosx_deployment_target
 c_stdlib_version:
-- '11.0'
+- '10.13'
 channel_sources:
 - conda-forge
 channel_targets:
@@ -19,9 +19,9 @@ is_abi3:
 is_python_min:
 - true
 macos_machine:
-- arm64-apple-darwin20.0.0
+- x86_64-apple-darwin13.4.0
 openssl:
-- '3'
+- '3.5'
 pin_run_as_build:
   python:
     min_pin: x.x
@@ -33,8 +33,7 @@ python_min:
 rust_compiler:
 - rust
 target_platform:
-- osx-arm64
+- osx-64
 zip_keys:
 - - python
   - is_python_min
-  - channel_sources
