@@ -1,7 +1,7 @@
 context:
   name: py-rattler
   python_name: py_rattler
-  version: "0.21.0"
+  version: "0.22.0"
 
 recipe:
   name: py-rattler
@@ -9,7 +9,7 @@ recipe:
 
 source:
   url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/${{ python_name }}-${{ version }}.tar.gz
-  sha256: abc35d04489a8a8a18587683abea4b6967326ac6777559f8a53d0aa821fb48c7
+  sha256: 46e047ff23a8fe2f3b599f02ef24ff29a6e65c571202828863361d2e9d33fdd8
 
 build:
   number: 0
@@ -58,9 +58,7 @@ outputs:
           script:
             - if: win
               then: abi3audit %PREFIX%/Lib/site-packages/rattler/rattler.pyd -s -v --assume-minimum-abi3 ${{ python_min }}
-            - if: not win
-              then:
-                # Need to set SP_DIR because of https://github.com/prefix-dev/rattler-build/issues/1733
+              else:
                 - export SP_DIR=$(python -c "import site; print(site.getsitepackages()[0])")
                 - abi3audit $SP_DIR/rattler/rattler.abi3.so -s -v --assume-minimum-abi3 ${{ python_min }}
           requirements:
