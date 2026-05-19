@@ -4,6 +4,10 @@ set -euxo pipefail
 
 export CARGO_PROFILE_RELEASE_STRIP=symbols
 export CARGO_PROFILE_RELEASE_LTO=fat
+# Remove this wrapper once https://github.com/conda-forge/rust-activation-feedstock/pull/79 is merged
+mkdir -p ${BUILD_PREFIX}/bin
+cp ${RECIPE_DIR}/cargo-auditable-wrapper.sh ${BUILD_PREFIX}/bin/cargo-auditable-wrapper
+export CARGO="cargo-auditable-wrapper"
 
 export OPENSSL_DIR=$PREFIX
 
