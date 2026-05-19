@@ -10,7 +10,7 @@ source:
   sha256: 0b6eaf428054ad6c5357c27d8b017843019bca27a4dbd308c541c467d6525523
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - package:
@@ -32,6 +32,7 @@ outputs:
         - ${{ stdlib("c") }}
         - ${{ compiler('rust') }}
         - cargo-bundle-licenses
+        - cargo-auditable
       host:
         - python
         - if: is_abi3
