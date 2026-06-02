@@ -11,6 +11,15 @@ export CARGO="cargo-auditable-wrapper"
 
 export OPENSSL_DIR=$PREFIX
 
+# rust-lld (LLD) cannot handle some of the relocations GCC emits for ppc64le
+# (e.g. inline-PLT R_PPC64_PLTSEQ/PLTCALL), which breaks linking of C-based
+# crates such as aws-lc-sys and libdbus-sys. Fall back to the GNU bfd linker on
+# that platform, which handles these relocations. gcc honors the last
+# -fuse-ld, so this overrides rustc's bundled rust-lld default.
+if [[ "${target_platform}" == "linux-ppc64le" ]]; then
+  export CARGO_BUILD_RUSTFLAGS="${CARGO_BUILD_RUSTFLAGS:-} -C link-arg=-fuse-ld=bfd"
+fi
+
 # Use native-tls on conda-forge
 export MATURIN_PEP517_ARGS="--no-default-features --features=native-tls"
 
