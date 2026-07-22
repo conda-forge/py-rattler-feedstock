@@ -6,21 +6,22 @@ recipe:
   version: ${{ version }}
 
 source:
-  url: https://files.pythonhosted.org/packages/5f/10/64e7f7e44381b102d48c5ed32771304b31d7549f56f604ba7e108a580293/py_rattler-${{ version }}.tar.gz
+  url: https://pypi.org/packages/source/p/py-rattler/py_rattler-${{ version }}.tar.gz
   sha256: 62d282870d08404898cec16da39f6085964117d19ee2f6d4a15f3ae19bd07860
 
 build:
-  number: 1
+  number: 2
 
 outputs:
   - package:
       name: py-rattler
     build:
-      # only build for the minimal python version
-      skip: is_abi3 and not is_python_min
+      skip:
+        - is_abi3 and not is_python_min
+        - not is_abi3 and target_platform == "linux-ppc64le"
       script: build_base
       python:
-        version_independent: true
+        version_independent: ${{ is_abi3 }}
     requirements:
       build:
         - if: build_platform != target_platform
@@ -50,16 +51,14 @@ outputs:
             - rattler
           python_version:
             - if: is_abi3
-              then: "${{ python_min ~ '.*' }}"
+              then: ${{ python_min }}.*
             - "*"
       - if: is_abi3
         then:
           script:
             - if: win
               then: abi3audit %PREFIX%/Lib/site-packages/rattler/rattler.pyd -s -v --assume-minimum-abi3 ${{ python_min }}
-              else:
-                - export SP_DIR=$(python -c "import site; print(site.getsitepackages()[0])")
-                - abi3audit $SP_DIR/rattler/rattler.abi3.so -s -v --assume-minimum-abi3 ${{ python_min }}
+              else: abi3audit $SP_DIR/rattler/rattler.abi3.so -s -v --assume-minimum-abi3 ${{ python_min }}
           requirements:
             run:
               - abi3audit
@@ -68,7 +67,7 @@ outputs:
       name: py_rattler
     build:
       noarch: generic
-      skip: not (linux and x86_64 and is_python_min)
+      skip: not (target_platform == "linux-64" and is_abi3 and is_python_min)
     requirements:
       run:
         - ${{ pin_subpackage('py-rattler', upper_bound="x.x.x") }}
