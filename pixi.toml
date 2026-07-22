@@ -23,12 +23,18 @@ description = "List contents of all packages found in rattler-build build direct
 [tasks.build]
 cmd = "rattler-build build --recipe recipe"
 description = "Build py-rattler-feedstock directly (without setup scripts), no particular variant specified"
-[tasks."build-linux_64_"]
-cmd = "rattler-build build --recipe recipe -m .ci_support/linux_64_.yaml"
-description = "Build py-rattler-feedstock with variant linux_64_ directly (without setup scripts)"
-[tasks."inspect-linux_64_"]
-cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/linux_64_.yaml"
-description = "List contents of py-rattler-feedstock packages built for variant linux_64_"
+[tasks."build-linux_64_is_abi3false"]
+cmd = "rattler-build build --recipe recipe -m .ci_support/linux_64_is_abi3false.yaml"
+description = "Build py-rattler-feedstock with variant linux_64_is_abi3false directly (without setup scripts)"
+[tasks."inspect-linux_64_is_abi3false"]
+cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/linux_64_is_abi3false.yaml"
+description = "List contents of py-rattler-feedstock packages built for variant linux_64_is_abi3false"
+[tasks."build-linux_64_is_abi3true"]
+cmd = "rattler-build build --recipe recipe -m .ci_support/linux_64_is_abi3true.yaml"
+description = "Build py-rattler-feedstock with variant linux_64_is_abi3true directly (without setup scripts)"
+[tasks."inspect-linux_64_is_abi3true"]
+cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/linux_64_is_abi3true.yaml"
+description = "List contents of py-rattler-feedstock packages built for variant linux_64_is_abi3true"
 [tasks."build-linux_aarch64_is_abi3falsepython3.14.____cp314t"]
 cmd = "rattler-build build --recipe recipe -m .ci_support/linux_aarch64_is_abi3falsepython3.14.____cp314t.yaml"
 description = "Build py-rattler-feedstock with variant linux_aarch64_is_abi3falsepython3.14.____cp314t directly (without setup scripts)"
