@@ -16,8 +16,9 @@ outputs:
   - package:
       name: py-rattler
     build:
-      # only build for the minimal python version
-      skip: is_abi3 and not is_python_min
+      skip:
+        - is_abi3 and not is_python_min
+        - not is_abi3 and target_platform == "linux-ppc64le"
       script: build_base
       python:
         version_independent: ${{ is_abi3 }}
