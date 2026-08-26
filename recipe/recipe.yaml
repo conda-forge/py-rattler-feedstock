@@ -34,6 +34,10 @@ outputs:
         - ${{ compiler('rust') }}
         - cargo-bundle-licenses
         - cargo-auditable
+        - if: target_platform == "win-arm64"
+          then:
+            - cmake
+            - ninja
       host:
         - python
         - if: is_abi3
