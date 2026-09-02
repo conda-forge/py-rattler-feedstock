@@ -10,7 +10,7 @@ source:
   sha256: 62d282870d08404898cec16da39f6085964117d19ee2f6d4a15f3ae19bd07860
 
 build:
-  number: 3
+  number: 4
 
 outputs:
   - package:
@@ -19,7 +19,62 @@ outputs:
       skip:
         - is_abi3 and not is_python_min
         - not is_abi3 and target_platform == "linux-ppc64le"
-      script: build_base
+      script:
+        interpreter: brush
+        env:
+          CARGO_PROFILE_RELEASE_STRIP: symbols
+          CARGO_PROFILE_RELEASE_LTO: fat
+        content: |
+          # Remove this wrapper once https://github.com/conda-forge/rust-activation-feedstock/pull/79 is merged
+          if [[ "$target_platform" == win-* ]]; then
+            echo 'cargo auditable %*' > "$BUILD_PREFIX/Library/bin/cargo-auditable-wrapper.bat"
+            export CARGO="cargo-auditable-wrapper.bat"
+          else
+            mkdir -p "$BUILD_PREFIX/bin"
+            printf '#!/usr/bin/env sh\nexec cargo auditable "$@"\n' > "$BUILD_PREFIX/bin/cargo-auditable-wrapper"
+            chmod +x "$BUILD_PREFIX/bin/cargo-auditable-wrapper"
+            export CARGO="cargo-auditable-wrapper"
+          fi
+
+          # Use native-tls on conda-forge
+          export MATURIN_PEP517_ARGS="--no-default-features --features=native-tls"
+
+          if [[ "$target_platform" == win-* ]]; then
+            export PYO3_PYTHON="$PYTHON"
+            export CMAKE_GENERATOR="NMake Makefiles"
+            export MATURIN_PEP517_ARGS="$MATURIN_PEP517_ARGS --jobs 1"
+          else
+            export OPENSSL_DIR="$PREFIX"
+          fi
+
+          if [[ "$target_platform" == "win-arm64" ]]; then
+            # Keep CMake's object paths below Windows' limit.
+            export CARGO_TARGET_DIR="$TMP/py-rattler-cargo-target"
+            export CARGO_HOME="$TMP/py-rattler-cargo-home"
+
+            # Use CMake for aws-lc-sys and clang-cl for its ARM64 assembly.
+            export AWS_LC_SYS_CMAKE_BUILDER=1
+            export CC_aarch64_pc_windows_msvc=clang-cl.exe
+            export CXX_aarch64_pc_windows_msvc=clang-cl.exe
+            export ASM_aarch64_pc_windows_msvc=clang-cl.exe
+            export CMAKE_GENERATOR=Ninja
+          fi
+
+          # rust-lld (LLD) cannot handle some of the relocations GCC emits for ppc64le
+          # (e.g. inline-PLT R_PPC64_PLTSEQ/PLTCALL), which breaks linking of C-based
+          # crates such as aws-lc-sys and libdbus-sys. Fall back to the GNU bfd linker on
+          # that platform, which handles these relocations. gcc honors the last
+          # -fuse-ld, so this overrides rustc's bundled rust-lld default.
+          if [[ "$target_platform" == "linux-ppc64le" ]]; then
+            export CARGO_BUILD_RUSTFLAGS="${CARGO_BUILD_RUSTFLAGS:-} -C link-arg=-fuse-ld=bfd"
+          fi
+
+          # Run the maturin build via pip which works for direct and
+          # cross-compiled builds.
+          "$PYTHON" -m pip install . -vv
+
+          cd py-rattler
+          cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
       python:
         version_independent: ${{ is_abi3 }}
     requirements:
@@ -29,6 +84,7 @@ outputs:
             - python
             - cross-python_${{ target_platform }}
             - maturin >=1.2.2,<2
+        - brush
         - ${{ compiler('c') }}
         - ${{ stdlib("c") }}
         - ${{ compiler('rust') }}
