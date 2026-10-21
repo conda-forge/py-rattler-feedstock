@@ -10,7 +10,7 @@ source:
   sha256: 08ca473cb08431684dcbbe97bd571d4c625669a9031de2d1cb360ee1340bbdf7
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - package:
@@ -25,6 +25,10 @@ outputs:
           CARGO_PROFILE_RELEASE_STRIP: symbols
           CARGO_PROFILE_RELEASE_LTO: fat
         content: |
+          pushd py-rattler
+          cargo update webpki-root-certs rustls-webpki
+          popd
+
           # Remove this wrapper once https://github.com/conda-forge/rust-activation-feedstock/pull/79 is merged
           if [[ "$target_platform" == win-* ]]; then
             echo 'cargo auditable %*' > "$BUILD_PREFIX/Library/bin/cargo-auditable-wrapper.bat"
