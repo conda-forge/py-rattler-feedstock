@@ -25,10 +25,6 @@ outputs:
           CARGO_PROFILE_RELEASE_STRIP: symbols
           CARGO_PROFILE_RELEASE_LTO: fat
         content: |
-          pushd py-rattler
-          cargo update webpki-root-certs rustls-webpki
-          popd
-
           # Remove this wrapper once https://github.com/conda-forge/rust-activation-feedstock/pull/79 is merged
           if [[ "$target_platform" == win-* ]]; then
             echo 'cargo auditable %*' > "$BUILD_PREFIX/Library/bin/cargo-auditable-wrapper.bat"
@@ -91,6 +87,7 @@ outputs:
 
           # Run the maturin build via pip which works for direct and
           # cross-compiled builds.
+          export MATURIN_PEP517_ARGS="$MATURIN_PEP517_ARGS --locked"
           "$PYTHON" -m pip install . -vv
 
           cd py-rattler
@@ -103,7 +100,7 @@ outputs:
           then:
             - python
             - cross-python_${{ target_platform }}
-            - maturin >=1.2.2,<2
+            - maturin >=1.14.0,<2
         - brush
         - ${{ compiler('c') }}
         - ${{ stdlib("c") }}
@@ -118,7 +115,7 @@ outputs:
         - python
         - if: is_abi3
           then: python-abi3
-        - maturin >=1.2.2,<2
+        - maturin >=1.14.0,<2
         - pip
         - if: linux
           then:
