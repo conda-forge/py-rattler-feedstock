@@ -176,5 +176,4 @@ about:
 extra:
   feedstock-name: py-rattler
   recipe-maintainers:
-    - baszalmstra
-    - pavelzw
+    - conda-forge/rattler
